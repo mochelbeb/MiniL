@@ -1,0 +1,17 @@
+import MiniL.io;
+import MiniL.lang;
+public class $test 
+{
+ int $v1 = 5;
+ int $v2 = 6; 
+ main
+ {
+  $v1 := 5 + 3;
+  $v2 := 10 - $v1;
+  for($i := 2;$i<5;$i++){
+  	$v3 := 10 + 6;
+  }
+  IN('%d',$v1);
+  IN('%d',$v2);
+ }
+}
