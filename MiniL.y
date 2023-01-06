@@ -5,7 +5,6 @@
     int t1[100];
     float t2[100];
     char *t3[100];
-
     char *M1[100];
     char *M2[100];
     char *M3[100];
