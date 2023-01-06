@@ -2,11 +2,17 @@
     #include "MiniL.c"
     void yyerror(char* err);
     int div_zero = 0;
-    int t[100];
-    char *M[100];
-    int i =0;
+    int t1[100];
+    float t2[100];
+    char *t3[100];
+
+    char *M1[100];
+    char *M2[100];
+    char *M3[100];
+
+    int i =0;int j=0;int k=0;
 %}
-%token OUTKEY DPP INKEY BIBLANG INTKEY PVG FLOATKEY Signformattageint Signformattagefloat Signformattagestr STRKEY BIBIO PUBLICKEY PROTECTEDKEY FORKEY MAINKEY CLASSKEY IMPORTKEY CONSTANT TABLEKEY LETTER NUMBER STR CHAR PLUS MINUS DIV MUL OP CP OA CA OC CC VRG EQ NEQ SUP INF INFEQ SUPEQ ANDOP OROP apostrophe NOT
+%token OUTKEY DPP INKEY BIBLANG INTKEY PVG FLOATKEY Signformattageint Signformattagefloat Signformattagestr STRKEY BIBIO PUBLICKEY PROTECTEDKEY FORKEY MAINKEY CLASSKEY IMPORTKEY CONSTANT TABLEKEY LETTER NUMBER CHAR PLUS MINUS DIV MUL OP CP OA CA OC CC VRG EQ NEQ SUP INF INFEQ SUPEQ ANDOP OROP apostrophe NOT
 %union{
   char* chr;
   int int_type;
@@ -15,6 +21,7 @@
 %token <chr> KEYWORD 
 %token <int_type> INTEGER
 %token <real_type> REAL
+%token <chr> STR
 %type<int_type> EXP
 %type<chr> chaine
 %start S
@@ -34,12 +41,14 @@ NOMBIB : BIBIO | BIBLANG;
 CLASSPART : MODIFOPTION CLASSKEY KEYWORD OA DECLARATIONPART MAINKEY OA MAINPART CA CA;
 MODIFOPTION : PUBLICKEY | PROTECTEDKEY | ;
 DECLARATIONPART : VARDECLARATION DECLARATIONPART | TABLEDECLARATION DECLARATIONPART |;
-VARDECLARATION : INTKEY KEYWORD EQ INTEGER PVG {t[i] = $4;M[i] = $2;i++; printf("%s %d %s %d",$2,$4,M[0],t[0]);} 
-                | INTKEY KEYWORD OTHERVAR PVG
-                | FLOATKEY KEYWORD EQ REAL PVG
-                | FLOATKEY KEYWORD OTHERVAR PVG
-                | STRKEY KEYWORD EQ STR PVG | STRKEY KEYWORD OTHERVAR PVG;
-OTHERVAR : VRG KEYWORD |;
+VARDECLARATION : INTKEY KEYWORD EQ INTEGER PVG {t1[i] = $4;M1[i] = $2; printf("%s %d",M1[i],t1[i]);i++;} 
+                | INTKEY KEYWORD OTHERVAR_int PVG {t1[i] = 0;M1[i]=$2;i++;}
+                | FLOATKEY KEYWORD EQ REAL PVG {t2[j]=$4;M2[j]=$2;j++;}
+                | FLOATKEY KEYWORD OTHERVAR_real PVG {t2[j]=0;M2[j]=$2;j++;}
+                | STRKEY KEYWORD EQ STR PVG {t3[k]=$4;M3[k]=$2;k++;}| STRKEY KEYWORD OTHERVAR_str PVG{t3[k]="";M3[k]=$2;k++;};
+OTHERVAR_int : VRG KEYWORD OTHERVAR_int{M1[i]=$2;t1[i]=0;i++;}|;
+OTHERVAR_real: VRG KEYWORD OTHERVAR_real {M2[j]=$2;t2[j]=0;j++;}|;
+OTHERVAR_str: VRG KEYWORD OTHERVAR_str {M3[k]=$2;t3[k]="";i++;}|;
 TABLEDECLARATION : TYPEOPTION KEYWORD OC NUMBER CC PVG | TYPEOPTION KEYWORD OC CC PVG; // INT T[10];
 TYPEOPTION : INTKEY | FLOATKEY | STRKEY;
 MAINPART : OPTIONINST MAINPART |;
